@@ -10,7 +10,7 @@ license-file = "LICENSE"
 homepage = "https://github.com/dtynn/serde-humanize-rs"
 documentation = "https://docs.rs/serde-humanize-rs"
 repository = "https://github.com/dtynn/serde-humanize-rs"
-keywords = ["humanize", "human", "human-friendly", "readable", "parser", "serde", "deserialize"]
+keywords = ["humanize", "human-friendly", "readable", "serde", "deserialize"]
 categories = ["parsing"]
 
 [dependencies]
