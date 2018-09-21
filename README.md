@@ -1,6 +1,11 @@
 ## serde-humanize-rs
 A Serde deserializer for duration and byte-size using the crate [humanize-rs](https://github.com/dtynn/humanize-rs).
 
+### Supported typs
+- Byte-size: "10 MB", "10 MiB", "3 tib" ...
+- Duration: "10ms", "90m", "2d5h30m42s" ...
+- Datetime(RFC3339): "2008-03-01T10:23:57Z", "2008-03-01T10:23:57.557", "2008-03-01T10:23:57.557+08:00" ...
+
 ### Usage
 1. Add this lib as a dependency
 ```
