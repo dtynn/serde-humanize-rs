@@ -1,5 +1,5 @@
 use serde_json;
-use std::time::Duration;
+use std::time::{Duration, SystemTime};
 
 #[test]
 fn test_parse_duration() {
@@ -59,4 +59,43 @@ fn test_parse_option_byte_size() {
     let json2 = r#"{"size": null}"#;
     let foo2 = serde_json::from_str::<Foo>(json2).unwrap();
     assert_eq!(foo2.size, None);
+}
+
+#[test]
+fn test_parse_datetime() {
+    #[derive(Deserialize)]
+    struct Foo {
+        #[serde(with = "super")]
+        close_at: SystemTime,
+    }
+
+    let json = r#"{"close_at": "2105-03-01T10:23:57.000013579+08:00"}"#;
+    let foo = serde_json::from_str::<Foo>(json).unwrap();
+    assert_eq!(
+        foo.close_at.duration_since(SystemTime::UNIX_EPOCH).unwrap(),
+        Duration::new(4265317437, 000013579)
+    );
+}
+
+#[test]
+fn test_parse_option_datetime() {
+    #[derive(Deserialize)]
+    struct Foo {
+        #[serde(with = "super")]
+        close_at: Option<SystemTime>,
+    }
+
+    let json = r#"{"close_at": "2105-03-01T10:23:57.000013579+08:00"}"#;
+    let foo = serde_json::from_str::<Foo>(json).unwrap();
+    assert_eq!(
+        foo.close_at
+            .unwrap()
+            .duration_since(SystemTime::UNIX_EPOCH)
+            .unwrap(),
+        Duration::new(4265317437, 000013579)
+    );
+
+    let json2 = r#"{"close_at": null}"#;
+    let foo2 = serde_json::from_str::<Foo>(json2).unwrap();
+    assert_eq!(foo2.close_at, None);
 }
