@@ -1,3 +1,4 @@
+use regex::Regex;
 use serde_json;
 use std::time::{Duration, SystemTime};
 
@@ -98,4 +99,37 @@ fn test_parse_option_datetime() {
     let json2 = r#"{"close_at": null}"#;
     let foo2 = serde_json::from_str::<Foo>(json2).unwrap();
     assert_eq!(foo2.close_at, None);
+}
+
+#[test]
+fn test_parse_pattern() {
+    #[derive(Deserialize)]
+    struct Foo {
+        #[serde(with = "super")]
+        pattern: Regex,
+    }
+
+    let json = r#"{"pattern": "\n(\\d{4}\\-\\d{2}\\-\\d{2})"}"#;
+    let foo = serde_json::from_str::<Foo>(json).unwrap();
+    assert_eq!(foo.pattern.as_str(), "\n(\\d{4}\\-\\d{2}\\-\\d{2})");
+}
+
+#[test]
+fn test_parse_option_pattern() {
+    #[derive(Deserialize)]
+    struct Foo {
+        #[serde(with = "super")]
+        pattern: Option<Regex>,
+    }
+
+    let json = r#"{"pattern": "\n(\\d{4}\\-\\d{2}\\-\\d{2})"}"#;
+    let foo = serde_json::from_str::<Foo>(json).unwrap();
+    assert_eq!(
+        foo.pattern.unwrap().as_str(),
+        "\n(\\d{4}\\-\\d{2}\\-\\d{2})"
+    );
+
+    let json2 = r#"{"pattern": null}"#;
+    let foo2 = serde_json::from_str::<Foo>(json2).unwrap();
+    assert_eq!(foo2.pattern.is_none(), true);
 }

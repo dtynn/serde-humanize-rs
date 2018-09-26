@@ -1,6 +1,6 @@
 [package]
 name = "serde-humanize-rs"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["dtynn <dtynn@163.com>"]
 description = """
     A Serde deserializer for duration and byte-size.
@@ -16,6 +16,7 @@ categories = ["parsing"]
 [dependencies]
 serde = "1.0"
 humanize-rs = "0.1.4"
+regex = "1"
 
 [dev-dependencies]
 serde_derive = "1.0"
