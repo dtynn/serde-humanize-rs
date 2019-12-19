@@ -62,6 +62,22 @@ fn test_parse_option_byte_size() {
 }
 
 #[test]
+fn test_parse_byte_size_small() {
+    #[derive(Deserialize)]
+    struct Foo {
+        #[serde(with = "super")]
+        size: u16,
+    }
+
+    let json_ok = r#"{"size": "1 KiB"}"#;
+    let foo_ok = serde_json::from_str::<Foo>(json_ok).unwrap();
+    assert_eq!(foo_ok.size, 1_024);
+
+    let json_err = r#"{"size": "1 M"}"#;
+    assert!(serde_json::from_str::<Foo>(json_err).is_err());
+}
+
+#[test]
 fn test_parse_datetime() {
     #[derive(Deserialize)]
     struct Foo {
